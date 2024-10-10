@@ -3,7 +3,7 @@ import type { MapNodes, MapWay } from '../types/map';
 
 const useMapStore = create((set, get: any) => ({
   query: `[out:json];
-  area[name="Hengelo"]->.searchArea;
+  area[name="Enschede"]->.searchArea;
   (
     way["building"](area.searchArea);
   );

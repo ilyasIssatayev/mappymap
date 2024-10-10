@@ -1,18 +1,28 @@
 
 
 import * as THREE from 'three';
+import Map from '@/map/map'
 
-export default class Camera {
-    persepectiveCamera: THREE.PerspectiveCamera;
+const speed = 0.1;
 
-    constructor(persepectiveCamera: THREE.PerspectiveCamera) {
-        this.persepectiveCamera = persepectiveCamera;
-        this.setPosition(0,0,0);
+const handleKeyDown = (event: any, map: Map) => {
+    switch (event.key) {
+        case 'w':
+            map.camera.position.y -= speed;
+            break;
+        case 's':
+            map.camera.position.y += speed;
+            break;
+        case 'a':
+            map.camera.position.x -= speed;
+            break;
+        case 'd':
+            map.camera.position.x += speed;
+            break;
+        default:
+            break;
     }
+    map.render();
+};
 
-    setPosition(x: number, y: number, z: number): void {
-        this.persepectiveCamera.position.x = x;
-        this.persepectiveCamera.position.y = y;
-        this.persepectiveCamera.position.z = z;
-    }
-}
+export { handleKeyDown };
