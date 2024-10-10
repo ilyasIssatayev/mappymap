@@ -16,12 +16,12 @@ function MapRenderer() {
             console.log('map')
             console.log('MapRenderer')
             // const mapeStore: any = useMapStore();
-        
+
             let map = new Map(window.innerWidth, window.innerHeight);
             const mesh = getShape();
             map.add(mesh);
             map.render();
-        
+
 
             containerRef.current?.appendChild(map.renderer.domElement);
 
@@ -55,6 +55,11 @@ function MapRenderer() {
             // }
 
             // animate();
+
+            window.addEventListener('resize', () => {
+                console.log('resize')
+                map.resize(window.innerWidth, window.innerHeight)
+            });
         }
     }, []);
     return <div ref={containerRef} />;

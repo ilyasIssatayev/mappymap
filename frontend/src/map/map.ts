@@ -43,4 +43,11 @@ export default class Map {
         this.scene.add(mesh);
     }
 
+    resize(width: number, height: number):void{
+        this.camera.persepectiveCamera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.persepectiveCamera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.render()
+    }
+
 }
