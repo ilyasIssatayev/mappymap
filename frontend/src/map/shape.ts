@@ -1,13 +1,6 @@
 import * as THREE from 'three';
 
-const getShape = (): THREE.Mesh => {
-    const points = [
-        [0, 0],
-        [3, 0],
-        [3, 3],
-        [0, 3],
-    ]
-
+const getShape = (points:[number,number][]): THREE.Mesh => {
     const shape = new THREE.Shape();
     points.forEach((point, index) => {
         if (index === 0) {

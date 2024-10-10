@@ -18,43 +18,27 @@ function MapRenderer() {
             // const mapeStore: any = useMapStore();
 
             let map = new Map(window.innerWidth, window.innerHeight);
-            const mesh = getShape();
+            const points: [number, number][] = [
+                [0, 0],
+                [3, 0],
+                [2, 1],
+                [3, 3],
+                [0, 3],
+            ]
+            const mesh = getShape(points);
             map.add(mesh);
+            const points2: [number, number][] = [
+                [-4, 0],
+                [-1, 0],
+                [-3, 1],
+                [-1, 3],
+                [0, 3],
+            ]
+            const mesh2 = getShape(points2);
+            map.add(mesh2);
             map.render();
 
-
             containerRef.current?.appendChild(map.renderer.domElement);
-
-
-            // let mouseX = 0;
-            // let mouseY = 0;
-
-            // let targetRotationX = 0;
-            // let targetRotationY = 0;
-
-            // document.addEventListener('mousemove', (event) => {
-            //     // Normalize mouse position to [-1, 1]
-            //     mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            //     mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-
-            //     // Update target rotation based on mouse position
-            //     targetRotationY = mouseX * Math.PI * 0.5; // Horizontal rotation (left/right)
-            //     targetRotationX = mouseY * Math.PI * 0.5; // Vertical rotation (up/down)
-            // });
-
-            // const animate = () => {
-            //     requestAnimationFrame(animate);
-            //     console.log('aa')
-
-            //     // Smoothly rotate the camera towards the target rotation
-            //     map.camera.persepectiveCamera.rotation.y += (targetRotationY - map.camera.persepectiveCamera.rotation.y) * 0.05;
-            //     map.camera.persepectiveCamera.rotation.x += (targetRotationX - map.camera.persepectiveCamera.rotation.x) * 0.05;
-
-            //     // Render the scene
-            //     map.render()
-            // }
-
-            // animate();
 
             window.addEventListener('resize', () => {
                 console.log('resize')
