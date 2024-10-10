@@ -1,138 +1,61 @@
 import * as THREE from 'three';
 
-import { useState, useEffect,useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import useMapStore from '../stores/map';
+import Map from '@/map/map';
+import Camera from '@/map/camera';
+import { getShape } from '@/map/shape';
+
 import type { MapNodes, MapWay } from '../types/map';
 function MapRenderer() {
-    const mapeStore:any = useMapStore();
     const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-      if (typeof window !== 'undefined') {
-        const scene = new THREE.Scene();
-        const axesHelper = new THREE.AxesHelper( 5 );
-        scene.add( axesHelper );
+        console.log('effect')
+        if (typeof window !== 'undefined') {
+            console.log('map')
+            console.log('MapRenderer')
+            // const mapeStore: any = useMapStore();
+        
+            let map = new Map(window.innerWidth, window.innerHeight);
+            const mesh = getShape();
+            map.add(mesh);
+            map.render();
+        
 
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        containerRef.current?.appendChild(renderer.domElement);
-        camera.position.z = 0.6;
-        camera.position.y= 0;
-        camera.position.x= 1.5;
-        const geometry = new THREE.BoxGeometry();
-
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const pointMaterial = new THREE.MeshBasicMaterial({ color: 0x00fff0 });
-        const cube = new THREE.Mesh(geometry, material);
-        cube.scale.set(0.0001,0.0001,0.0001);
-        scene.add(cube);
-
-        mapeStore.getMapData( (nodes: MapNodes, ways: MapWay[])=>{
-          console.log('ways',ways)
-          ways.forEach( way =>{
-            const points = way.nodes.map( node => nodes[node]);
+            containerRef.current?.appendChild(map.renderer.domElement);
 
 
-            const shape = new THREE.Shape();
-            points.forEach((point, index) => {
-                if (index === 0) {
-                    shape.moveTo(point[0], point[1]);
-                } else {
-                    shape.lineTo(point[0], point[1]);
-                }
-            });
-            shape.lineTo(points[0][0], points[0][1]); // Close the shape
+            // let mouseX = 0;
+            // let mouseY = 0;
 
-            // Create geometry from the shape
-            const geometry = new THREE.ShapeGeometry(shape)
+            // let targetRotationX = 0;
+            // let targetRotationY = 0;
 
+            // document.addEventListener('mousemove', (event) => {
+            //     // Normalize mouse position to [-1, 1]
+            //     mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            //     mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 
+            //     // Update target rotation based on mouse position
+            //     targetRotationY = mouseX * Math.PI * 0.5; // Horizontal rotation (left/right)
+            //     targetRotationX = mouseY * Math.PI * 0.5; // Vertical rotation (up/down)
+            // });
 
-            console.log(way.tags);
-            points.forEach(point => {
-                const randomMat = new THREE.MeshBasicMaterial({ color: Math.floor(Math.random() * 16777215) });
-                const pointCube = new THREE.Mesh(geometry, randomMat);
-                pointCube.position.x = point[0]-52;
-                pointCube.position.y = point[1]-6.9;
+            // const animate = () => {
+            //     requestAnimationFrame(animate);
+            //     console.log('aa')
 
-                pointCube.position.x *= 7;
-                pointCube.position.y *= 7;
+            //     // Smoothly rotate the camera towards the target rotation
+            //     map.camera.persepectiveCamera.rotation.y += (targetRotationY - map.camera.persepectiveCamera.rotation.y) * 0.05;
+            //     map.camera.persepectiveCamera.rotation.x += (targetRotationX - map.camera.persepectiveCamera.rotation.x) * 0.05;
 
-                // pointCube.position.x *=4;
-                // pointCube.position.y *=4;
+            //     // Render the scene
+            //     map.render()
+            // }
 
-                pointCube.scale.set(0.0001,0.0001,0.0001);
-       
-            })
-          })
-
-            renderer.render(scene, camera);
-        });
-
-
-// Initialize variables
-var moveForward = false;
-var moveBackward = false;
-var moveLeft = false;
-var moveRight = false;
-
-const onKeyDown = (event:any) => {
-    switch (event.keyCode) {
-        case 87: // W
-            moveForward = true;
-            break;
-        case 83: // S
-            moveBackward = true;
-            break;
-        case 65: // A
-            moveLeft = true;
-            break;
-        case 68: // D
-            moveRight = true;
-            break;
-    }
-    updateCamera();
-}
-
-const onKeyUp = (event:any)=> {
-    switch (event.keyCode) {
-        case 87: // W
-            moveForward = false;
-            break;
-        case 83: // S
-            moveBackward = false;
-            break;
-        case 65: // A
-            moveLeft = false;
-            break;
-        case 68: // D
-            moveRight = false;
-            break;
-    }
-    updateCamera();
-}
-
-const updateCamera = ()=>{
-
-    // Move the camera based on keyboard input
-    if (moveForward) camera.position.y -= 1;
-    if (moveBackward) camera.position.y += 1;
-    if (moveLeft) camera.position.x -= 0.5;
-    if (moveRight) camera.position.x += 0.5;
-    console.log('cam ',camera.position.x, camera.position.y)
-    renderer.render(scene, camera);
-}
-
-// Set up keyboard event listeners
-document.addEventListener('keydown', onKeyDown, false);
-document.addEventListener('keyup', onKeyUp, false);
-
-
-      
-      // Render the scene and camera
-        renderer.render(scene, camera);
-      }
+            // animate();
+        }
     }, []);
     return <div ref={containerRef} />;
 }
