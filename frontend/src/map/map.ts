@@ -18,6 +18,7 @@ export default class Map {
         this.camera.position.z = 5;
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize(width, height);
+        this.renderer.setClearColor(0x000000, 0);
     }
 
     render(): void {

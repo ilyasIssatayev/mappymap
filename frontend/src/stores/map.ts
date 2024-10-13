@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import type { MapNodes, MapWay } from '../types/map';
 
-const area = "Enschede";
+const area = "Amsterdam";
 
 const useMapStore = create((set, get: any) => ({
   query: `[out:json];

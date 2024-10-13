@@ -1,0 +1,63 @@
+import { useState, useEffect, useRef } from 'react';
+
+
+import type { MapNodes, MapWay } from '../types/map';
+function DataCollector() {
+
+    const [textAreaValue, setTextAreaValue] = useState('');
+    const [inputValue, setInputValue] = useState('');
+
+    const handleSubmit = () => {
+        // Handle form submit logic here, for example:
+        console.log('Textarea:', textAreaValue);
+        console.log('Input:', inputValue);
+    };
+
+
+
+    return (
+        <div className="flex flex-row space-x-4 min-h-screen bg-white p-6">
+            <div className="flex flex-col mr-auto">
+                <h2 className="text-2xl font-semibold mb-4 text-start">Ilyas maps</h2>
+
+
+                <label htmlFor="input" className="block text-gray-700 mb-2">
+                    map title:
+                </label>
+                <input
+                    id="input"
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-100 mb-4"
+                />
+
+                <label htmlFor="textarea" className="block text-gray-700 mb-2">
+                    query:
+                </label>
+                <textarea
+                    id="textarea"
+                    value={textAreaValue}
+                    onChange={(e) => setTextAreaValue(e.target.value)}
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-100 mb-4"
+                    rows={5}
+                />
+
+
+
+                {/* Submit Button */}
+                <button
+                    onClick={handleSubmit}
+                    className="w-full bg-gray-900 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-500 transition"
+                >
+                    Submit
+                </button>
+            </div>
+            <div className="flex flex-col mr-auto">
+          
+            </div>
+        </div>
+    );
+}
+
+export default DataCollector
