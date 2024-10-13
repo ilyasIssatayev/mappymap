@@ -3,15 +3,15 @@
 import * as THREE from 'three';
 import Map from '@/map/map'
 
-const speed = 0.1;
+const speed = 2;
 
 const handleKeyDown = (event: any, map: Map) => {
     switch (event.key) {
         case 'w':
-            map.camera.position.y -= speed;
+            map.camera.position.y += speed;
             break;
         case 's':
-            map.camera.position.y += speed;
+            map.camera.position.y -= speed;
             break;
         case 'a':
             map.camera.position.x -= speed;

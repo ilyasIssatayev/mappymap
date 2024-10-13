@@ -1,9 +1,11 @@
 import { create } from 'zustand'
 import type { MapNodes, MapWay } from '../types/map';
 
+const area = "Enschede";
+
 const useMapStore = create((set, get: any) => ({
   query: `[out:json];
-  area[name="Enschede"]->.searchArea;
+  area[name="${area}"]->.searchArea;
   (
     way["building"](area.searchArea);
   );
@@ -17,7 +19,10 @@ const useMapStore = create((set, get: any) => ({
   ) => {
     console.log('request start')
     const encodedQuery: string = encodeURIComponent(get().query);
-    const data = { query: encodedQuery };
+    const cacheMeta = {
+      file: 'map_' + area
+    };
+    const data = { query: encodedQuery, cacheMeta };
 
     const response = await fetch('api/overpass', {
       method: 'POST',
@@ -39,7 +44,8 @@ const useMapStore = create((set, get: any) => ({
       }
     });
 
-    callback(nodes, ways);
+    if (callback) callback(nodes, ways);
+    return { nodes, ways }
   }
 }))
 

@@ -45,7 +45,7 @@ function MapRenderer() {
             points = points.map((point) => [
                 (point[0] - firstPoint[0]) * multiplier,
                 (point[1] - firstPoint[1]) * multiplier])
-            console.log(points)
+    
             const mesh = getShape(points);
             map.add(mesh);
         })
