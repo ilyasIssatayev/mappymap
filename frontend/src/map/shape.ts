@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {colors} from './style';
 
 const getShape = (points:[number,number][]): THREE.Mesh => {
     const shape = new THREE.Shape();
@@ -13,7 +14,7 @@ const getShape = (points:[number,number][]): THREE.Mesh => {
 
     // Create geometry from the shape
     const geometry = new THREE.ShapeGeometry(shape)
-    const randomMat = new THREE.MeshBasicMaterial({ color: Math.floor(Math.random() * 16777215) });
+    const randomMat = new THREE.MeshBasicMaterial({ color: colors.primary });
     const mesh = new THREE.Mesh(geometry, randomMat);
 
     return mesh;

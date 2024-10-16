@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 
+
 export default class Map {
 
     camera: THREE.PerspectiveCamera;
