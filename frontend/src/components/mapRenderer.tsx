@@ -21,8 +21,10 @@ function MapRenderer() {
 
         containerRef.current?.appendChild(map.renderer.domElement);
 
-        mapeStore.getMapData((nodes: MapNodes, ways: MapWay[]) => proccessPoints(nodes, ways, map));
-
+        mapeStore.attachOnUpdate(()=>{
+            mapeStore.getMapData((nodes: MapNodes, ways: MapWay[]) => proccessPoints(nodes, ways, map));
+        })
+       
         window.addEventListener('resize', () => {
             console.log('resize')
             map.resize(window.innerWidth, window.innerHeight)

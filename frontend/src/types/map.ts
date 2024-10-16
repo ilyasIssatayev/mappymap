@@ -9,4 +9,12 @@ type MapWay = {
     type: "way",
 }
 
-export type { MapNodes, MapWay };
+type MapFile = {
+    name:string,
+    query: string, 
+    file:string,
+    preloaded: ()=> boolean,
+}
+
+
+export type { MapNodes, MapWay,MapFile };

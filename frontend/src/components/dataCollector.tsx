@@ -1,17 +1,55 @@
 import { useState, useEffect, useRef } from 'react';
+import useMapStore from '../stores/map';
 
-
-import type { MapNodes, MapWay } from '../types/map';
+import type { MapNodes, MapWay, MapFile } from '../types/map';
 function DataCollector() {
+    const LocalStorageKey = "mapFileInput"
+    const mapeStore: any = useMapStore();
 
     const [textAreaValue, setTextAreaValue] = useState('');
     const [inputValue, setInputValue] = useState('');
+
+
+    useEffect(() => {
+        //restore previous input values just in case
+        const storedInputValues = localStorage.getItem(LocalStorageKey);
+        if (storedInputValues) {
+            const parsed = JSON.parse(storedInputValues);
+            setInputValue(parsed.name);
+            setTextAreaValue(parsed.query);
+        }
+
+    }, [])
 
     const handleSubmit = () => {
         // Handle form submit logic here, for example:
         console.log('Textarea:', textAreaValue);
         console.log('Input:', inputValue);
+
+        const mapFile: MapFile = {
+            name: inputValue,
+            query: textAreaValue,
+            file: inputValue,
+            preloaded: () => false
+        }
+
+        localStorage.setItem(LocalStorageKey, JSON.stringify(mapFile));
+
+        mapeStore.setActiveMapFile(mapFile);
+        mapeStore.callOnUpdate();
     };
+
+    useEffect(()=>{
+        const mapFile: MapFile = {
+            name: inputValue,
+            query: textAreaValue,
+            file: inputValue,
+            preloaded: () => false
+        }
+
+        localStorage.setItem(LocalStorageKey, JSON.stringify(mapFile));
+        console.log("on updated")
+    },[textAreaValue,inputValue])
 
 
 
@@ -39,7 +77,7 @@ function DataCollector() {
                     id="textarea"
                     value={textAreaValue}
                     onChange={(e) => setTextAreaValue(e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-100 mb-4"
+                    className="w-full p-3 min-h-64 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-100 mb-4"
                     rows={5}
                 />
 
@@ -54,7 +92,7 @@ function DataCollector() {
                 </button>
             </div>
             <div className="flex flex-col mr-auto">
-          
+
             </div>
         </div>
     );
