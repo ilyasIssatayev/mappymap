@@ -11,6 +11,7 @@ function MapRenderer() {
     const mapeStore: any = useMapStore();
     const containerRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<Map | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -23,26 +24,30 @@ function MapRenderer() {
         containerRef.current?.appendChild(map.renderer.domElement);
 
         mapeStore.attachOnUpdate(() => {
+            setIsLoading(true)
             mapeStore.getMapData((nodes: MapNodes, ways: MapWay[]) => proccessPoints(nodes, ways, map));
         })
 
-        window.addEventListener('resize', () => {
-            console.log('resize')
-            map.resize(window.innerWidth, window.innerHeight)
-        });
+        const handleResize = () => {
+            console.log('resize');
+            map.resize(window.innerWidth, window.innerHeight);
+        };
 
-        window.addEventListener('keydown', (event) => {
-            handleKeyDown(event, map)
-        });
+        const handleKeyDownEvent = (event: KeyboardEvent) => {
+            handleKeyDown(event, map);
+        };
 
+        window.addEventListener('resize', handleResize);
+        window.addEventListener('keydown', handleKeyDownEvent);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('keydown', handleKeyDownEvent);
+        };
     }, []);
 
     const proccessPoints = (nodes: MapNodes, ways: MapWay[], map: Map) => {
-        console.log('ways', ways)
-        console.log('map', map);
-
         map.clear();
-        map.render();
 
         const multiplier = 100;
         const firstPoint = ways[0].nodes.map(node => nodes[node])[0];
@@ -57,9 +62,16 @@ function MapRenderer() {
         })
 
         map.render();
+        setIsLoading(false)
     }
 
-    return <div ref={containerRef} />;
+    return (
+        <div className='relative w-screen h-screen'>
+            <div className={isLoading?'blur-md':''} ref={containerRef} />
+            {isLoading ? <div className='absolute flex top-0 left-0 z-10 w-full h-full bg-transparent text-white'>
+                <span className='m-auto text-4xl font-black'>Loading ...</span>
+            </div> : ''}
+        </div>);
 }
 
 export default MapRenderer
