@@ -34,7 +34,8 @@ const useMapStore = create((set, get: any) => ({
   },
 
   reqeustMapLoad: async (mapFile: MapFile) => {
-
+    get().setActiveMapFile(mapFile);
+    get().callOnUpdate();
   },
 
   getMapData: async (
