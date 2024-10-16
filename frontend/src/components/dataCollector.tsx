@@ -35,8 +35,7 @@ function DataCollector() {
 
         localStorage.setItem(LocalStorageKey, JSON.stringify(mapFile));
 
-        mapeStore.setActiveMapFile(mapFile);
-        mapeStore.callOnUpdate();
+        mapeStore.reqeustMapLoad(mapFile);
     };
 
     useEffect(()=>{
