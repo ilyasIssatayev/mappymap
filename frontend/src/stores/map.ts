@@ -1,11 +1,12 @@
 import Map from '@/map/map';
 import { create } from 'zustand'
-import type { MapNodes, MapWay,MapFile } from '../types/map';
+import type { MapNodes, MapWay, MapFile } from '../types/map';
+import * as Crypto from 'crypto-js';
 
 const area = "Enschede";
 
 let activeMapFile: MapFile;
-const onUpdate:Array<()=>void> = [];
+const onUpdate: Array<() => void> = [];
 
 const useMapStore = create((set, get: any) => ({
   query: `[out:json];
@@ -21,15 +22,19 @@ const useMapStore = create((set, get: any) => ({
 
   setActiveMapFile: (newMapFile: MapFile) => set({ activeMapFile: newMapFile }),
 
-  attachOnUpdate: (callback:()=>void)=> {
-    if(!get().onUpdate) set({onUpdate:[]})
+  attachOnUpdate: (callback: () => void) => {
+    if (!get().onUpdate) set({ onUpdate: [] })
     get().onUpdate.push(callback);
   },
 
-  callOnUpdate: ()=>{
+  callOnUpdate: () => {
     get().onUpdate.forEach(
-      (callback:()=>void)=>callback()
+      (callback: () => void) => callback()
     );
+  },
+
+  reqeustMapLoad: async (mapFile: MapFile) => {
+
   },
 
   getMapData: async (
@@ -37,8 +42,13 @@ const useMapStore = create((set, get: any) => ({
   ) => {
     console.log('request start')
     const encodedQuery: string = encodeURIComponent(get().activeMapFile.query);
+
+    //generate a hash out of query
+    const hash = Crypto.SHA256(encodedQuery).toString(Crypto.enc.Hex);
+
     const cacheMeta = {
-      file: 'map_' + get().activeMapFile.file+".json"
+      file: get().activeMapFile.file,
+      hash
     };
     const data = { query: encodedQuery, cacheMeta };
 
@@ -66,5 +76,7 @@ const useMapStore = create((set, get: any) => ({
     return { nodes, ways }
   }
 }))
+
+
 
 export default useMapStore;

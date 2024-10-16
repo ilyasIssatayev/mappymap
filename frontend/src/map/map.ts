@@ -23,12 +23,16 @@ export default class Map {
     }
 
     render(): void {
-        console.log(this.scene.children);
+        console.log(this.scene.children.length);
         this.renderer.render(this.scene, this.camera);
     }
 
     add(mesh: THREE.Mesh): void {
         this.scene.add(mesh);
+    }
+
+    clear(): void {
+        this.scene.clear();
     }
 
     resize(width: number, height: number): void {

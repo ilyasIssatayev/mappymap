@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { useState, useEffect, useRef } from 'react';
 import useMapStore from '../stores/map';
 import Map from '@/map/map';
-import {handleKeyDown} from '@/map/camera';
+import { handleKeyDown } from '@/map/camera';
 import { getShape } from '@/map/shape';
 
 import type { MapNodes, MapWay } from '../types/map';
@@ -19,19 +19,20 @@ function MapRenderer() {
         setMap(map);
         map.render();
 
+        if (containerRef.current) containerRef.current.innerHTML = '';
         containerRef.current?.appendChild(map.renderer.domElement);
 
-        mapeStore.attachOnUpdate(()=>{
+        mapeStore.attachOnUpdate(() => {
             mapeStore.getMapData((nodes: MapNodes, ways: MapWay[]) => proccessPoints(nodes, ways, map));
         })
-       
+
         window.addEventListener('resize', () => {
             console.log('resize')
             map.resize(window.innerWidth, window.innerHeight)
         });
 
-        window.addEventListener('keydown', (event)=>{
-            handleKeyDown(event,map)
+        window.addEventListener('keydown', (event) => {
+            handleKeyDown(event, map)
         });
 
     }, []);
@@ -40,6 +41,9 @@ function MapRenderer() {
         console.log('ways', ways)
         console.log('map', map);
 
+        map.clear();
+        map.render();
+
         const multiplier = 100;
         const firstPoint = ways[0].nodes.map(node => nodes[node])[0];
         ways.forEach(way => {
@@ -47,7 +51,7 @@ function MapRenderer() {
             points = points.map((point) => [
                 (point[0] - firstPoint[0]) * multiplier,
                 (point[1] - firstPoint[1]) * multiplier])
-    
+
             const mesh = getShape(points);
             map.add(mesh);
         })

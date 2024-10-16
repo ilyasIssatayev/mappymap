@@ -88,7 +88,7 @@ function DataCollector() {
                     onClick={handleSubmit}
                     className="w-full bg-gray-900 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-500 transition"
                 >
-                    Submit
+                    Render Map
                 </button>
             </div>
             <div className="flex flex-col mr-auto">
