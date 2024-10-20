@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import useMapStore from '../stores/map';
+import useMapStore from '../stores/mapDataStore';
 import MapFileInput from './inputs/MapFileInput';
 import FileListInput from './inputs/FileListInput';
 

@@ -1,7 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
-import useMapStore from '../../stores/map';
-
+import useMapStore from '../../stores/mapDataStore';
+import { toast } from 'react-hot-toast';
 import type { MapNodes, MapWay, MapFile } from '../../types/map';
+
+
+const defaultQuery = `[out:json];
+area[name="Enschede"]->.searchArea;
+(
+  way["building"](area.searchArea);
+);
+out body;
+>;
+out skel qt;`;
+
+
 function MapFileInput() {
     const LocalStorageKey = "mapFileInput"
     const mapeStore: any = useMapStore();
@@ -15,6 +27,9 @@ function MapFileInput() {
             const parsed = JSON.parse(storedInputValues);
             setInputValue(parsed.name);
             setTextAreaValue(parsed.query);
+        }
+        else{
+            setTextAreaValue(defaultQuery);
         }
 
     }, [])

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import useMapStore from '../../stores/map';
+import useMapStore from '../../stores/mapDataStore';
 
 import type { MapNodes, MapWay, MapFile } from '../../types/map';
 function FileListInput() {

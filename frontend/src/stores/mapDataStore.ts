@@ -2,23 +2,12 @@ import Map from '@/map/map';
 import { create } from 'zustand'
 import type { MapNodes, MapWay, MapFile } from '../types/map';
 import * as Crypto from 'crypto-js';
+import { toast } from 'react-hot-toast';
 
-const area = "Enschede";
-
-let activeMapFile: MapFile;
 const onUpdate: Array<() => void> = [];
 
 const useMapStore = create((set, get: any) => ({
-  query: `[out:json];
-  area[name="${area}"]->.searchArea;
-  (
-    way["building"](area.searchArea);
-  );
-  out body;
-  >;
-  out skel qt;` as string,
-
-  setQuery: (newQuery: string) => set({ query: newQuery }),
+  activeMapFile: {} as MapFile,
 
   setActiveMapFile: (newMapFile: MapFile) => set({ activeMapFile: newMapFile }),
 
@@ -41,7 +30,7 @@ const useMapStore = create((set, get: any) => ({
   getMapData: async (
     callback: (nodes: MapNodes, ways: MapWay[]) => void
   ) => {
-    console.log('request start')
+    toast('Loading map from the OSM');
     const encodedQuery: string = encodeURIComponent(get().activeMapFile.query);
 
     //generate a hash out of query
@@ -61,6 +50,7 @@ const useMapStore = create((set, get: any) => ({
       body: JSON.stringify(data),
     });
     const jsonData = await response.json();
+
     console.log('>', jsonData);
 
     var nodes: MapNodes = {};
@@ -77,6 +67,7 @@ const useMapStore = create((set, get: any) => ({
       });
     }
 
+    toast.success("Map is loaded!", { duration: 4000 })
 
     if (callback) callback(nodes, ways);
     return { nodes, ways }

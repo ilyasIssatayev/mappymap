@@ -1,13 +1,16 @@
 import * as THREE from 'three';
 
 import { useState, useEffect, useRef } from 'react';
-import useMapStore from '../stores/map';
+import useMapStore from '../stores/mapDataStore';
 import Map from '@/map/map';
 import { handleKeyDown } from '@/map/camera';
 import { getShape } from '@/map/shape';
+import { toast } from 'react-hot-toast';
 
 import type { MapNodes, MapWay } from '../types/map';
 function MapRenderer() {
+
+
     const mapeStore: any = useMapStore();
     const containerRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<Map | null>(null);
@@ -71,6 +74,8 @@ function MapRenderer() {
         map.render();
         setIsLoading(false)
     }
+
+   
 
     return (
         <div className='relative w-screen h-screen'>
