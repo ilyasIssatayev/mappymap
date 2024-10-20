@@ -3,7 +3,7 @@ import * as THREE from 'three';
 
 export default class Map {
 
-    camera: THREE.PerspectiveCamera;
+    camera: THREE.OrthographicCamera;
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
 
@@ -14,10 +14,23 @@ export default class Map {
         // const axesHelper = new THREE.AxesHelper(500);
         // this.scene.add(axesHelper);
 
-        const perspectiveCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.camera = new THREE.PerspectiveCamera();
-        this.camera.position.z = 5;
+
+        const aspect = window.innerWidth / window.innerHeight;
+        const frustumSize = 10;
+        
+        this.camera = new THREE.OrthographicCamera(
+            -frustumSize * aspect / 2,   // left
+            frustumSize * aspect / 2,    // right
+            frustumSize / 2,             // top
+            -frustumSize / 2,            // bottom
+            0.1,                         // near
+            1000                         // far
+        );
+        this.camera.position.z = 10;
         this.renderer = new THREE.WebGLRenderer();
+
+
+
         this.renderer.setSize(width, height);
         this.renderer.setClearColor(0x000000, 0);
     }
@@ -36,7 +49,6 @@ export default class Map {
     }
 
     resize(width: number, height: number): void {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.render()
