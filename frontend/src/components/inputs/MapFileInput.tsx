@@ -36,10 +36,9 @@ function MapFileInput() {
 
     const handleSubmit = () => {
         const mapFile: MapFile = {
+            type: 'MapRequest',
             name: inputValue,
             query: textAreaValue,
-            file: inputValue,
-            preloaded: () => false
         }
         localStorage.setItem(LocalStorageKey, JSON.stringify(mapFile));
         mapeStore.reqeustMapLoad(mapFile);
@@ -47,10 +46,9 @@ function MapFileInput() {
 
     useEffect(() => {
         const mapFile: MapFile = {
+            type: 'MapRequest',
             name: inputValue,
             query: textAreaValue,
-            file: inputValue,
-            preloaded: () => false
         }
         localStorage.setItem(LocalStorageKey, JSON.stringify(mapFile));
     }, [textAreaValue, inputValue])

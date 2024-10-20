@@ -30,7 +30,10 @@ function MapRenderer() {
 
         mapeStore.attachOnUpdate(() => {
             setIsLoading(true)
-            mapeStore.getMapData((nodes: MapNodes, ways: MapWay[]) => proccessPoints(nodes, ways, map));
+        })
+
+        mapeStore.attachOnDownloaded((nodes: MapNodes, ways: MapWay[])=>{
+            proccessPoints(nodes, ways, map)
         })
 
         const handleResize = () => {

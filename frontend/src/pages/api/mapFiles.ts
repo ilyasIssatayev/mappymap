@@ -15,7 +15,7 @@ export default async function handler(
             const splits = path.split('.')[0].split('_');
             const name = splits[0];
             const hash = splits[1];
-            return {name, hash}
+            return {name, hash,path}
         })
 
         console.log(output)

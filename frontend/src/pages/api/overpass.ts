@@ -16,20 +16,19 @@ export default async function handler(
     res: NextApiResponse<Data>
 ) {
     try {
-        const { file, hash } = req.body.cacheMeta;
-        const filePath = path.join(process.cwd(), 'data', file + "_" + hash + '.json');
+        const { name, hash, preload } = req.body.cacheMeta;
+        const filePath = path.join(process.cwd(), 'data', name + "_" + hash + '.json');
 
         if (fs.existsSync(filePath)) {
-            console.log('Request has been saved, sending cached values  >>> ' + file)
             const jsonData = fs.readFileSync(filePath, 'utf8');
             return res.status(200).json(JSON.parse(jsonData));
         }
 
+        if (preload)return res.status(404);
 
         const apiUrl = `https://overpass-api.de/api/interpreter?data=${req.body.query}`;
         const response = await fetch(apiUrl);
         const jsonData: any = await response.json() as any;
-
 
 
         fs.writeFile(filePath, JSON.stringify(jsonData, null, 2), (err) => {

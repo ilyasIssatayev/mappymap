@@ -9,11 +9,15 @@ type MapWay = {
     type: "way",
 }
 
-type MapFile = {
-    name:string,
-    query: string, 
-    file:string,
-    preloaded: ()=> boolean,
+type MapFile = ({ type: 'MapRequest' } & MapRequest) | ({ type: 'PreloadedMap' } & PreloadedMap);
+
+type MapRequest = {
+    name: string,
+    query: string,
+}
+type PreloadedMap = {
+    name: string,
+    hash: string,
 }
 
 enum State {
@@ -23,9 +27,9 @@ enum State {
     GENERATING,
     GENERATED,
     FAILED,
-  }
-  
+}
 
 
-export type { MapNodes, MapWay,MapFile };
-export { State}
+
+export type { MapNodes, MapWay, MapFile };
+export { State }
