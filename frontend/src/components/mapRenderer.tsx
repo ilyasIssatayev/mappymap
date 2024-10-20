@@ -90,7 +90,7 @@ function MapRenderer() {
         <div className='relative w-screen h-screen'>
             <div className={isLoading ? 'blur-md' : ''} ref={containerRef} />
             {isLoading ? <div className='absolute flex top-0 left-0 z-10 w-full h-full bg-transparent '>
-                <span className='m-auto text-4xl font-black text-gray-900'>Loading ...</span>
+                <span className='m-auto text-4xl font-black text-primary-500'>Loading ...</span>
             </div> : ''}
         </div>);
 }
