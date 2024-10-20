@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+@import './icons.css';
+@import './fileList.css';
+
 body {
-    margin: 0!important;
+    margin: 0 !important;
+}
+
+h1, .main_title {
+    @apply text-4xl block font-bold text-gray-700;
+}
+
+
+
+h2, .title {
+    @apply block font-bold text-gray-700;
+}
+
+h3, .sub_title  {
+    @apply block font-bold text-gray-700;
 }

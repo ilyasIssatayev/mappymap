@@ -61,17 +61,22 @@ const useMapStore = create((set, get: any) => ({
       body: JSON.stringify(data),
     });
     const jsonData = await response.json();
+    console.log('>', jsonData);
 
     var nodes: MapNodes = {};
     var ways: MapWay[] = [];
 
-    jsonData.elements.forEach((element: any) => {
-      if (element.type === 'node') {
-        nodes[element.id] = [element.lat, element.lon];
-      } else if (element.type === 'way') {
-        ways.push(element);
-      }
-    });
+    //todo check if jsonData can be empty
+    if (jsonData != {}) {
+      jsonData.elements.forEach((element: any) => {
+        if (element.type === 'node') {
+          nodes[element.id] = [element.lat, element.lon];
+        } else if (element.type === 'way') {
+          ways.push(element);
+        }
+      });
+    }
+
 
     if (callback) callback(nodes, ways);
     return { nodes, ways }

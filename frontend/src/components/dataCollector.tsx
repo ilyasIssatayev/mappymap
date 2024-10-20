@@ -6,13 +6,13 @@ import FileListInput from './inputs/FileListInput';
 import type { MapNodes, MapWay, MapFile } from '../types/map';
 function DataCollector() {
     return (
-        <div className="flex flex-row space-x-4 min-h-screen bg-white p-6 justify-start">
+        <div className="flex flex-col min-h-screen bg-white p-6 justify-start">
             <div className="flex flex-col">
-                <h2 className="text-2xl font-semibold mb-4 text-start">Ilyas maps</h2>
-                <MapFileInput/>
+                <h1 className="mb-4 text-start">ART MAP</h1>
             </div>
-            <div className="flex flex-col">
-                <FileListInput/>
+            <div className="flex space-x-6 ">
+                <MapFileInput />
+                <FileListInput />
             </div>
         </div>
     );

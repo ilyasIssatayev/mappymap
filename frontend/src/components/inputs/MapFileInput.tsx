@@ -44,7 +44,7 @@ function MapFileInput() {
 
     return (
         <div className="flex flex-col ">
-            <label htmlFor="input" className="block font-bold text-gray-700 mb-2">
+            <label htmlFor="input" className="title mb-2">
                 map title:
             </label>
             <input
@@ -55,7 +55,7 @@ function MapFileInput() {
                 className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-100 mb-4"
             />
 
-            <label htmlFor="textarea" className="block font-bold text-gray-700 mb-2">
+            <label htmlFor="textarea" className="title mb-2">
                 query:
             </label>
             <textarea
@@ -67,7 +67,7 @@ function MapFileInput() {
             />
             <button
                 onClick={handleSubmit}
-                className="w-full bg-gray-900 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-500 transition"
+                className="w-full bg-dark text-white font-semibold py-2 px-4 rounded-md hover:bg-primary-500 transition"
             >
                 Render Map
             </button>

@@ -48,6 +48,13 @@ function MapRenderer() {
 
     const proccessPoints = (nodes: MapNodes, ways: MapWay[], map: Map) => {
         map.clear();
+        console.log('nodes', nodes);
+        console.log('ways', ways)
+        if (nodes == {} || ways.length == 0) {
+            console.log("Did not find anything :((");
+            map.render();
+            return;
+        }
 
         const multiplier = 100;
         const firstPoint = ways[0].nodes.map(node => nodes[node])[0];
@@ -67,7 +74,7 @@ function MapRenderer() {
 
     return (
         <div className='relative w-screen h-screen'>
-            <div className={isLoading?'blur-md':''} ref={containerRef} />
+            <div className={isLoading ? 'blur-md' : ''} ref={containerRef} />
             {isLoading ? <div className='absolute flex top-0 left-0 z-10 w-full h-full bg-transparent '>
                 <span className='m-auto text-4xl font-black text-gray-900'>Loading ...</span>
             </div> : ''}

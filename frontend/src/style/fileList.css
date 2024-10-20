@@ -1,0 +1,7 @@
+.file_list__cell{
+    @apply rounded-md grid grid-cols-3 py-3 hover:bg-primary-500 hover:text-white border-dark items-center;
+}
+
+.file_list__cell * {
+    @apply h-full px-2 my-auto 
+  }

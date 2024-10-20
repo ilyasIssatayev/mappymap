@@ -1,0 +1,10 @@
+.delete-icon {
+    background-image: url('/delete.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain; /* Keeps aspect ratio */
+    width: 24px; /* Adjust to fit your icon */
+    height: 24px; /* Adjust to fit your icon */
+    border: none; /* Optional */
+    cursor: pointer;
+  }
