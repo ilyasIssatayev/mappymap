@@ -1,13 +1,44 @@
-import Map from '@/map/map';
 import { create } from 'zustand'
-import type { MapNodes, MapWay, MapFile } from '../types/map';
 import * as Crypto from 'crypto-js';
 import { toast } from 'react-hot-toast';
+
+import type { MapNodes, MapWay, MapFile } from '../types/map';
+import { State } from '../types/map';
+
+import Map from '@/map/map';
+
+
+const toastDuration = 6000;
 
 const onUpdate: Array<() => void> = [];
 
 const useMapStore = create((set, get: any) => ({
   activeMapFile: {} as MapFile,
+  state: State.IDLE as State,
+
+  setState: (state: State, descripion = '' as string) => {
+    switch (state) {
+      case State.IDLE:
+        break;
+      case State.DOWNLOADING:
+        toast('Downloading map data...', { duration: toastDuration });
+        break;
+      case State.DOWNLOADED:
+        toast.success("Map is downloaded", { duration: toastDuration })
+        break;
+      case State.GENERATING:
+        toast("Generating map", { duration: toastDuration })
+        break;
+      case State.GENERATED:
+        toast.success("Map is ready to use!", { duration: toastDuration })
+        break;
+        case State.FAILED:
+          toast.success("Fuck, "+descripion??'something got broken', { duration: 4000 })
+          break;
+    }
+
+    set({ state })
+  },
 
   setActiveMapFile: (newMapFile: MapFile) => set({ activeMapFile: newMapFile }),
 
@@ -23,6 +54,10 @@ const useMapStore = create((set, get: any) => ({
   },
 
   reqeustMapLoad: async (mapFile: MapFile) => {
+    if (get().state != State.IDLE) {
+      toast.error("Wait for the previous map to load first")
+      return;
+    }
     get().setActiveMapFile(mapFile);
     get().callOnUpdate();
   },
@@ -30,7 +65,11 @@ const useMapStore = create((set, get: any) => ({
   getMapData: async (
     callback: (nodes: MapNodes, ways: MapWay[]) => void
   ) => {
-    toast('Loading map from the OSM');
+    if (get().state != State.IDLE) {
+      toast.error("Wait for the previous map to load first")
+      return;
+    }
+    get().setState(State.DOWNLOADING);
     const encodedQuery: string = encodeURIComponent(get().activeMapFile.query);
 
     //generate a hash out of query
@@ -67,8 +106,8 @@ const useMapStore = create((set, get: any) => ({
       });
     }
 
-    toast.success("Map is loaded!", { duration: 4000 })
 
+    get().setState(State.DOWNLOADED);
     if (callback) callback(nodes, ways);
     return { nodes, ways }
   }

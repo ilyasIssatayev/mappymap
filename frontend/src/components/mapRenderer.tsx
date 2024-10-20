@@ -1,13 +1,15 @@
 import * as THREE from 'three';
 
 import { useState, useEffect, useRef } from 'react';
+import { toast } from 'react-hot-toast';
+
 import useMapStore from '../stores/mapDataStore';
 import Map from '@/map/map';
 import { handleKeyDown } from '@/map/camera';
 import { getShape } from '@/map/shape';
-import { toast } from 'react-hot-toast';
-
 import type { MapNodes, MapWay } from '../types/map';
+import { State } from '../types/map';
+
 function MapRenderer() {
 
 
@@ -50,12 +52,14 @@ function MapRenderer() {
     }, []);
 
     const proccessPoints = (nodes: MapNodes, ways: MapWay[], map: Map) => {
+        mapeStore.setState(State.GENERATING)
         map.clear();
         console.log('nodes', nodes);
         console.log('ways', ways)
         if (nodes == {} || ways.length == 0) {
             console.log("Did not find anything :((");
             map.render();
+            mapeStore.setState(State.FAILED)
             return;
         }
 
@@ -72,7 +76,9 @@ function MapRenderer() {
         })
 
         map.render();
+        mapeStore.setState(State.GENERATED)
         setIsLoading(false)
+        mapeStore.setState(State.IDLE);
     }
 
    

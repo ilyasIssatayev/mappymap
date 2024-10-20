@@ -11,12 +11,14 @@ function LandingPage() {
         <div className="w-screen h-screen flex flex-col">
             <Toaster containerStyle={{
                 position: 'fixed',
+                display: 'flex',
                 top:20,
                 left:'auto',
                 bottom: 'auto',
-                right: 80,
-                maxWidth: 300,
-                minWidth: 200,
+                right: 20,
+                width: 280,
+            }} toastOptions ={{
+                className: 'w-full'
             }} />
             <DataCollector></DataCollector>
             <MapRenderer></MapRenderer>

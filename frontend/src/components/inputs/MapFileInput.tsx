@@ -28,7 +28,7 @@ function MapFileInput() {
             setInputValue(parsed.name);
             setTextAreaValue(parsed.query);
         }
-        else{
+        else {
             setTextAreaValue(defaultQuery);
         }
 

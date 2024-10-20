@@ -16,5 +16,16 @@ type MapFile = {
     preloaded: ()=> boolean,
 }
 
+enum State {
+    IDLE,
+    DOWNLOADING,
+    DOWNLOADED,
+    GENERATING,
+    GENERATED,
+    FAILED,
+  }
+  
+
 
 export type { MapNodes, MapWay,MapFile };
+export { State}
